@@ -1,0 +1,15 @@
+icon {
+  font-size: 80;
+  top:       250;
+  color:     darkgray;
+  width:     90;
+  height:    90;
+}
+
+icon#camera {
+  left: 50;
+}
+
+icon#album {
+  left: 180;
+}
