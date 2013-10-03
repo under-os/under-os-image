@@ -2,7 +2,7 @@
 # A little module to wrap up the built-in
 # iOS images picking/taking
 #
-class UnderOs::ImagePicker
+class UnderOs::Image::Picker
   def initialize(page, options={})
     @page       = page
     @animated   = options.delete(:animated) || true

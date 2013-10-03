@@ -1,7 +1,7 @@
 # just a gem hook
 
 Motion::Project::App.instance_eval do
-  alias :setup_before_under_os_camera :setup
+  alias :setup_before_under_os_image :setup
 
   def setup(*args, &block)
     config.setup_blocks << proc do |app|
@@ -10,7 +10,7 @@ Motion::Project::App.instance_eval do
       end
     end
 
-    setup_before_under_os_camera *args do |app|
+    setup_before_under_os_image *args do |app|
       instance_exec app, &block
     end
   end

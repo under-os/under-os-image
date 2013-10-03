@@ -1,7 +1,8 @@
-# UnderOs Camera
+# UnderOS Image
 
-This is a little repo with camera/photoalbums related hooks for the
-`under-os` project
+The new simplified images processing API for the [http://under-os.com](under-os) project
+
+Basically it's a wrapper over the `UIImage` and `CI` library
 
 
 # Copyright & License

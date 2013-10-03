@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    under-os-camera (0.0.0)
+    under-os-image (0.0.0)
       under-os
 
 PATH
@@ -20,4 +20,4 @@ PLATFORMS
 DEPENDENCIES
   rake
   under-os!
-  under-os-camera!
+  under-os-image!
