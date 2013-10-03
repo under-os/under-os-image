@@ -1,8 +1,10 @@
 class EditorPage < UOS::Page
 
   def initialize(image)
-    @image = first('#preview')
-    @image.src = image.raw
+    @original = image
+    @cropped  = image.resize(UnderOs::Screen.size)
+    @preview  = first('#preview')
+    @preview.src = @cropped.raw
   end
 
 end
