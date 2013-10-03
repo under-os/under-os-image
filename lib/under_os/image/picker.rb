@@ -3,8 +3,7 @@
 # iOS images picking/taking
 #
 class UnderOs::Image::Picker
-  def initialize(page, options={})
-    @page       = page
+  def initialize(options={})
     @animated   = options.delete(:animated) || true
     @_          = UIImagePickerController.alloc.init
     @_.delegate = self
@@ -26,11 +25,12 @@ class UnderOs::Image::Picker
 
   def start(&block)
     @block = block
-    @page._.presentModalViewController @_, animated: @animated
+    @page  = UnderOs::Application.current_page._
+    @page.presentModalViewController @_, animated: @animated
   end
 
   def imagePickerController(picker, didFinishPickingImage:image, editingInfo:info)
-    @page._.dismissModalViewControllerAnimated(@animated)
+    @page.dismissModalViewControllerAnimated(@animated)
     @block.call(image)
   end
 end
