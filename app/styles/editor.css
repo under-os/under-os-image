@@ -1,0 +1,26 @@
+#preview {
+  width:  320;
+  height: 426;
+  top:    60;
+  left:   0;
+}
+
+#buttons {
+  width:  320;
+  height: 82;
+  left:   0;
+  top:    486;
+}
+
+#buttons icon {
+  color:     darkgray;
+  font-size: 60;
+  top:       5;
+  width:     70;
+  height:    70;
+}
+
+#buttons icon#contrast   { left: 5;   }
+#buttons icon#brightness { left: 80;  }
+#buttons icon#tint       { left: 160; }
+#buttons icon#magic      { left: 240; }
