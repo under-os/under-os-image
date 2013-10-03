@@ -9,16 +9,16 @@ class UnderOs::Image::Picker
     @_.delegate = self
   end
 
-  def capture(&block)
+  def take(&block)
     if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceTypeCamera)
       @_.setSourceType(UIImagePickerControllerSourceTypeCamera)
       start(&block)
     else
-      select(&block)
+      pick(&block)
     end
   end
 
-  def select(&block)
+  def pick(&block)
     @_.setSourceType(UIImagePickerControllerSourceTypePhotoLibrary)
     start(&block)
   end
@@ -31,6 +31,6 @@ class UnderOs::Image::Picker
 
   def imagePickerController(picker, didFinishPickingImage:image, editingInfo:info)
     @page.dismissModalViewControllerAnimated(@animated)
-    @block.call(image)
+    @block.call(UnderOs::Image.new(image))
   end
 end

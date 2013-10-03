@@ -1,13 +1,11 @@
 class HomePage < UOS::Page
   def initialize
-    @image_picker = UOS::Image::Picker.new
-
     first('#camera').on :tap do
-      @image_picker.capture{|image| edit image}
+      UOS::Image.take{|image| edit image}
     end
 
     first('#album').on :tap do
-      @image_picker.select{|image| edit image}
+      UOS::Image.pick{|image| edit image}
     end
   end
 
