@@ -9,7 +9,7 @@
   width:  320;
   height: 82;
   left:   0;
-  top:    486;
+  bottom: 0;
 }
 
 #buttons icon {
@@ -24,3 +24,32 @@
 #buttons icon#brightness { left: 80;  }
 #buttons icon#tint       { left: 160; }
 #buttons icon#magic      { left: 240; }
+
+#slider-menu {
+  width: 320;
+  height: 80;
+  background: #eee;
+  bottom: -80;
+}
+
+#slider-menu icon {
+  font-size: 40;
+  top:       20;
+  width:     40;
+  height:    40;
+  left:      10;
+  color:     red;
+}
+
+#slider-menu icon#okay {
+  right: 10;
+  color: green;
+}
+
+#slider-menu slider {
+  top:   25;
+  left:  60;
+  width: 200;
+}
+
+

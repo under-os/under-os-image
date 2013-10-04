@@ -72,31 +72,12 @@ class UnderOs::Image::Filter
     when :vignette_intensity then value + 2
     when :vignette_radius    then value + 1
     when :tint_intensity     then value
-    when :tint_color         then color_for_angle(value)
+    when :tint_color         then UnderOs::Color.new(value * Math::PI).ci
     when :mono_intensity     then value
     when :mono_color         then CIColor.colorWithRed(value, green:value, blue:value, alpha:1.0)
     end
 
     value ? [FILTERS[key][1], value] : []
-  end
-
-  def color_for_angle(a)
-    r, g, b = angle_2_rgb(a)
-    CIColor.colorWithRed(r, green:g, blue:b, alpha:1.0)
-  end
-
-  def angle_2_rgb(a)
-    x = 1 / 6.0
-    s = a % x / x
-    r = 1 - s
-
-    if    a < x     then [1, 0, s]
-    elsif a < x * 2 then [r, 0, 1]
-    elsif a < x * 3 then [0, s, 1]
-    elsif a < x * 4 then [0, 1, r]
-    elsif a < x * 5 then [s, 1, 0]
-    else                 [1, r, 0]
-    end
   end
 
   FILTERS = {
