@@ -26,7 +26,7 @@ class UnderOs::Image::Picker
   def start(&block)
     @block = block
     @page  = UnderOs::Application.current_page._
-    @page.presentModalViewController @_, animated: @animated
+    @page.presentViewController @_, animated: @animated, completion: nil
   end
 
   def imagePickerController(picker, didFinishPickingImage:image, editingInfo:info)

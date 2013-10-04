@@ -19,5 +19,9 @@ module UnderOs
     def initialize(raw_image)
       @raw = raw_image
     end
+
+    def filter(params)
+      Filter.new(params).apply_to(self)
+    end
   end
 end
