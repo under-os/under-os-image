@@ -22,8 +22,8 @@
 
 #buttons icon#contrast   { left: 5;   }
 #buttons icon#brightness { left: 80;  }
-#buttons icon#tint       { left: 160; }
-#buttons icon#magic      { left: 240; }
+#buttons icon#exposure   { left: 160; }
+#buttons icon#saturation { left: 240; }
 
 #slider-menu {
   width: 320;

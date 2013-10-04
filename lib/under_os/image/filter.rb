@@ -42,6 +42,8 @@ class UnderOs::Image::Filter
     @filters = {}
 
     params.each do |key, value|
+      key = :tint_color if key == :tint
+
       filter     = filter_for(key)
       key, value = value_for(key, value)
       filter.setValue(value, forKey:key) if key
@@ -56,16 +58,16 @@ class UnderOs::Image::Filter
     if %w[tint_color tint_intensity].include?(param)
       @filters['tint_filter'] ||= CIFilter.filterWithName(filter_name)
     else
-      @filters[filter] ||= CIFilter.filterWithName(filter_name)
+      @filters[filter_name] ||= CIFilter.filterWithName(filter_name)
     end
   end
 
   def value_for(key, value)
     value = case key
-    when :contrast           then value
-    when :brightness         then value
-    when :saturation         then value
-    when :exposure           then value
+    when :contrast           then value + 0.5
+    when :brightness         then value - 0.5
+    when :saturation         then value * 2
+    when :exposure           then value - 0.5
     when :vibrance           then value
     when :highlights         then value
     when :sepia              then value
