@@ -10,7 +10,7 @@ class EditorPage < UOS::Page
       icon.on(:tap){|e| start_editing(e.target)}
     end
 
-    @menu     = first('#slider-menu')
+    @menu = first('sidebar')
 
     @menu.first('#okay').on(:tap)     { apply  }
     @menu.first('#cancel').on(:tap)   { cancel }
@@ -18,12 +18,12 @@ class EditorPage < UOS::Page
   end
 
   def apply
-    hide_menu
+    @menu.hide
   end
 
   def cancel
     @preview.src = @cropped.raw
-    hide_menu
+    @menu.hide
   end
 
   def update(value)
@@ -34,14 +34,6 @@ class EditorPage < UOS::Page
   def start_editing(icon)
     @edit_param = icon.id
     @menu.first('slider').value = 0.5
-    show_menu
-  end
-
-  def show_menu
-    @menu.animate({bottom: 0})
-  end
-
-  def hide_menu
-    @menu.animate({bottom: -@menu.size.y})
+    @menu.show
   end
 end

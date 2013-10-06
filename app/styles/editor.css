@@ -25,14 +25,12 @@
 #buttons icon#exposure   { left: 160; }
 #buttons icon#saturation { left: 240; }
 
-#slider-menu {
-  width: 320;
-  height: 80;
+sidebar {
+  height:     80;
   background: #eee;
-  bottom: -80;
 }
 
-#slider-menu icon {
+sidebar icon {
   font-size: 40;
   top:       20;
   width:     40;
@@ -41,12 +39,12 @@
   color:     red;
 }
 
-#slider-menu icon#okay {
+sidebar icon#okay {
   right: 10;
   color: green;
 }
 
-#slider-menu slider {
+sidebar slider {
   top:   25;
   left:  60;
   width: 200;
