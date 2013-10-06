@@ -4,7 +4,7 @@ class EditorPage < UOS::Page
     @original = image
     @cropped  = image.resize(UnderOs::Screen.size)
     @preview  = first('#preview')
-    @preview.src = @cropped.raw
+    @preview.src = @cropped
 
     find('#buttons icon').each do |icon|
       icon.on(:tap){|e| start_editing(e.target)}
@@ -28,7 +28,7 @@ class EditorPage < UOS::Page
 
   def update(value)
     @value = value
-    @preview.src = @cropped.filter(@edit_param.to_sym => value).raw
+    @preview.src = @cropped.filter(@edit_param.to_sym => value)
   end
 
   def start_editing(icon)
