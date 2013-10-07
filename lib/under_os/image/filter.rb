@@ -42,11 +42,24 @@ class UnderOs::Image
     def build_filters_from(params)
       filters = {}.tap do |filters|
         params.each do |key, value|
-          next if value == nil
+          next if ! value
           filter = filter_for(key)
           filters[filter] ||= {}
-          key, value = value_for(key, value)
-          filters[filter][key] = value if key
+
+          param, value = value_for(key, value)
+          next if ! param
+
+          if [:temperature, :tint].include?(key.to_sym)
+            vector = filters[filter][param] || CIVector.vectorWithX(6500, Y:0)
+
+            if key == :temperature
+              value = CIVector.vectorWithX(value, vector.Y)
+            else
+              value = CIVector.vectorWithX(vector.X, Y:value)
+            end
+          end
+
+          filters[filter][param] = value
         end
       end
 
@@ -74,21 +87,30 @@ class UnderOs::Image
     end
 
     def value_for(key, value)
-      value = case key
-      when :contrast           then value + 0.5
-      when :brightness         then value - 0.5
-      when :saturation         then value * 2
-      when :exposure           then value - 0.5
-      when :vibrance           then value - 0.5
-      when :highlights         then value + 0.5
-      when :shadows            then value + 0.5
-      when :vignette_intensity then value + 2
-      when :vignette_radius    then value + 1
-      when :tint_color         then UnderOs::Color.new(value * Math::PI).ci
-      when :mono_color         then CIColor.colorWithRed(value, green:value, blue:value, alpha:1.0)
-      end
-
+      value = normalize(key, value)
       value ? [FILTERS[key][1], value] : []
+    end
+
+    def normalize(key, value)
+      # overload this method if you need to normalize the value to your own scale
+
+      # the gudelines are the following (default value and changes range)
+
+      # :contrast           - 1.0 +/- 0.25
+      # :brightness         - 0.0 +/- 0.25
+      # :saturation         - 1.0 +/- 0.25
+      # :exposure           - 0.0 +/- 0.25
+      # :vibrance           - 0.0 +/- 0.25
+      # :shadows            - 1.0 +/- 1.0
+      # :highlights         - 1.0 +/- 1.0
+      # :midtone            - 1.0 +/- 0.5
+      # :vignette_intensity - 1.0 +/- 1.0
+      # :vignette_radius    - 1.0 +/- 0.5
+      # :lumi_sharp         - 1.0 +/- 1.0
+      # :tint               - 0.0 +/- 50
+      # :temperature        - 6500 +/- 1500
+      # :mono_color         - CIColor.colorWithRed(value, green:value, blue:value, alpha:1.0)
+      # :tone_color         - UnderOs::Color.new(value * Math::PI).ci
     end
 
     FILTERS = {
@@ -99,17 +121,18 @@ class UnderOs::Image
       vibrance:           %w[ CIVibrance              inputAmount               ], # 1.0 - verify
       highlights:         %w[ CIHighlightShadowAdjust inputHighlightAmount      ], # 1.0
       shadows:            %w[ CIHighlightShadowAdjust inputShadowAmount         ], # 1.0 - verify
+      midtone:            %w[ CIGammaAdjust           inputPower                ], # 0.75
       sepia:              %w[ CISepiaTone             inputIntensity            ], # 1.0
       vignette_radius:    %w[ CIVignette              inputRadius               ], # 1.0
       vignette_intensity: %w[ CIVignette              inputIntensity            ], # 0.0
       pixellate_scale:    %w[ CIPixellate             inputScale                ], # 8.0
       pixellate_center:   %w[ CIPixellate             inputCenter               ], # [150, 150]
-      wb_neutral:         %w[ CITemperatureAndTint    inputNeutral              ], # [6500, 0]
-      wb_target_nautral:  %w[ CITemperatureAndTint    inputTargetNeutral        ], # [6500, 0]
+      temperature:        %w[ CITemperatureAndTint    inputTargetNeutral        ], # [6500, 0] (change the first)
+      tint:               %w[ CITemperatureAndTint    inputTargetNeutral        ], # [6500, 0] (change the second)
       mono_color:         %w[ CIColorMonochrome       inputColor                ], # CIColor
       mono_intensity:     %w[ CIColorMonochrome       inputIntensity            ], # 1.0
-      tint_color:         %w[ CIColorMonochrome       inputColor                ], # CIColor
-      tint_intensity:     %w[ CIColorMonochrome       inputIntensity            ], # 1.0
+      tone_color:         %w[ CIColorMonochrome       inputColor                ], # CIColor
+      tone_intensity:     %w[ CIColorMonochrome       inputIntensity            ], # 1.0
       posterize:          %w[ CIColorPosterize        inputLevels               ], # 6.0
       lumi_sharp:         %w[ CISharpenLuminance      inputSharpness            ], # 0.4
       noise_reduce:       %w[ CIMedianFilter                                    ], # nil
@@ -124,6 +147,10 @@ class UnderOs::Image
       df_mask_radius:     %w[ CIDepthOfField          inputUnsharpMaskIntensity ], # nil
       df_mask_intensity:  %w[ CIDepthOfField          inputRadius               ], # nil
       hue_angle:          %w[ CIHueAdjust             inputAngle                ], # 0..2pi - verify
+      effect_fade:        %w[ CIPhotoEffectFade                                 ], # nil
+      effect_process:     %w[ CIPhotoEffectProcess                              ], # nil
+      effect_chrome:      %w[ CIPhotoEffectChrome                               ], # nil
+      effect_transfer:    %w[ CIPhotoEffectTransfer                             ], # nil
     }.freeze
 
   end
