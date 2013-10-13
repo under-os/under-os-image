@@ -67,8 +67,8 @@ class UnderOs::Image
       add_filter :CIToneCurve, inputPoint3: CIVector.vectorWithX(0.75, Y: 0.75 + (0.25 * value))
     end
 
-    def sharpen=(value) # 1.0 +/- 1.0
-      add_filter :CISharpenLuminance, inputSharpness: value
+    def sharpen=(value) # 0.5 +/- 0.5
+      add_filter :CIUnsharpMask, inputRadius: 1.5, inputIntensity: value
     end
 
     def temperature=(value) # 6500 +/- 1500
