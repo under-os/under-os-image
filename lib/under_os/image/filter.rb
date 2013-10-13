@@ -111,10 +111,6 @@ class UnderOs::Image
       add_filter :CIColorPosterize, inputLevels: value
     end
 
-    def noise_reduce=(value)
-      add_filter :CIMedianFilter
-    end
-
     def scale=(value)
       add_filter :CILanczosScaleTransform, inputScale: value
     end
