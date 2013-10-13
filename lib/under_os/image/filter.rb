@@ -55,16 +55,16 @@ class UnderOs::Image
       add_filter :CIVibrance, inputAmount: value
     end
 
-    def highlights=(value) # 1.0 +/- 1.0
-      add_filter :CIHighlightShadowAdjust, inputHighlightAmount: value
+    def shadows=(value) # 0 +/- 1.0
+      add_filter :CIToneCurve, inputPoint1: CIVector.vectorWithX(0.2, Y: 0.2 + (0.25 * value))
     end
 
-    def midtone=(value) # 1.0 +/- 0.5
-      add_filter :CIGammaAdjust, inputPower: value
+    def midtone=(value) # 0 +/- 1.0
+      add_filter :CIToneCurve, inputPoint2: CIVector.vectorWithX(0.5, Y: 0.5 + (0.25 * value))
     end
 
-    def shadows=(value) # 1.0 +/- 1.0
-      add_filter :CIHighlightShadowAdjust, inputShadowAmount: value
+    def highlights=(value) # 0 +/- 1.0
+      add_filter :CIToneCurve, inputPoint3: CIVector.vectorWithX(0.75, Y: 0.75 + (0.25 * value))
     end
 
     def sharpen=(value) # 1.0 +/- 1.0
