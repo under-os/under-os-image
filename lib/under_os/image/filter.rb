@@ -1,16 +1,24 @@
 class UnderOs::Image
   class Filter
 
+    attr_reader :image
+
     def initialize(params)
       self.params = params
     end
 
     def apply_to(image)
-      image = image.raw if image.is_a?(UnderOs::Image)
-      image = CIImage.alloc.initWithImage(image)
-      image = apply_filters_to(image)
+      self.image = image
+      apply
+    end
 
-      UnderOs::Image.new(render(image))
+    def image=(image)
+      @image = CIImage.alloc.initWithImage(
+        image.is_a?(UnderOs::Image) ? image.raw : image)
+    end
+
+    def apply
+      UnderOs::Image.new(render(@image))
     end
 
     def params
@@ -134,11 +142,27 @@ class UnderOs::Image
 
   protected
 
+    def render(image)
+      @context ||= begin # shared EAGL context
+        gl_context = EAGLContext.alloc.initWithAPI(KEAGLRenderingAPIOpenGLES2)
+        options    = {KCIContextWorkingColorSpace => nil}
+        CIContext.contextWithEAGLContext(gl_context, options:options)
+      end
+
+      image     = apply_filters_to(image)
+      cg_image  = @context.createCGImage(image, fromRect:image.extent)
+      new_image = UIImage.imageWithCGImage(cg_image)
+      CGImageRelease(cg_image)
+
+      new_image
+    end
+
     def apply_filters_to(image)
       @filters.each do |name, filter|
         if filter.is_a?(Proc)
           image = instance_exec image, &filter
         else
+          filter = self.class.filter_for(name, filter)
           filter.setValue(image, forKey: 'inputImage')
           image = filter.outputImage
         end
@@ -147,28 +171,28 @@ class UnderOs::Image
       image
     end
 
-    def render(image)
-      @context ||= begin # shared EAGL context
-        gl_context = EAGLContext.alloc.initWithAPI(KEAGLRenderingAPIOpenGLES2)
-        options    = {KCIContextWorkingColorSpace => nil}
-        CIContext.contextWithEAGLContext(gl_context, options:options)
-      end
-
-      cg_image  = @context.createCGImage(image, fromRect:image.extent)
-      new_image = UIImage.imageWithCGImage(cg_image)
-      CGImageRelease(cg_image)
-
-      new_image
-    end
-
   private
 
     def add_filter(name, values={})
-      @filters[name] ||= CIFilter.filterWithName(name.to_s)
+      @filters[name] ||= {}
 
       values.each do |key, value|
-        @filters[name].setValue(value, forKey: key.to_s)
+        @filters[name][key] = value
       end
+    end
+
+    def self.filter_for(name, params)
+      @filters_cache ||= {}
+      @filters_cache[name] ||= CIFilter.filterWithName(name.to_s)
+
+      filter = @filters_cache[name]
+      filter.setDefaults
+
+      params.each do |key, value|
+        filter.setValue(value, forKey: key.to_s)
+      end
+
+      filter
     end
   end
 end
