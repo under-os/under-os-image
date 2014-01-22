@@ -1,5 +1,4 @@
-UOS::Application.start do
-  config.navigation = true
-  config.status_bar = false
-  config.main_page  = HomePage.new
+UnderOs::App.start do
+  config.navbar    = true
+  config.root_page = HomePage.new
 end

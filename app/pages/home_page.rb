@@ -10,6 +10,6 @@ class HomePage < UOS::Page
   end
 
   def edit(image)
-    navigation.push EditorPage.new(image)
+    history << EditorPage.new(image)
   end
 end

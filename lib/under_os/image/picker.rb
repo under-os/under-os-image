@@ -25,7 +25,7 @@ class UnderOs::Image::Picker
 
   def start(&block)
     @block = block
-    @page  = UnderOs::Application.current_page._
+    @page  = UnderOs::App.history.current_page._
     @page.presentViewController @_, animated: @animated, completion: nil
   end
 

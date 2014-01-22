@@ -7,12 +7,12 @@ PATH
 PATH
   remote: ../under-os
   specs:
-    under-os (0.0.0)
+    under-os (1.2.1)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    rake (10.1.0)
+    rake (10.1.1)
 
 PLATFORMS
   ruby
