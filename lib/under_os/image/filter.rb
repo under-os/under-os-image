@@ -3,7 +3,7 @@ class UnderOs::Image
 
     attr_reader :image
 
-    def initialize(params)
+    def initialize(params={})
       self.params = params
     end
 
@@ -18,7 +18,7 @@ class UnderOs::Image
     end
 
     def apply
-      UnderOs::Image.new(render(@image))
+      UnderOs::Image.new(render)
     end
 
     def params
@@ -136,22 +136,25 @@ class UnderOs::Image
       end
     end
 
-  protected
-
-    def render(image)
-      @context ||= begin # shared EAGL context
-        gl_context = EAGLContext.alloc.initWithAPI(KEAGLRenderingAPIOpenGLES2)
-        options    = {KCIContextWorkingColorSpace => nil}
-        CIContext.contextWithEAGLContext(gl_context, options:options)
-      end
-
-      image     = apply_filters_to(image)
-      cg_image  = @context.createCGImage(image, fromRect:image.extent)
+    def render
+      image     = apply_filters_to(@image)
+      cg_image  = UnderOs::Image::Filter.context.createCGImage(image, fromRect:image.extent)
       new_image = UIImage.imageWithCGImage(cg_image)
       CGImageRelease(cg_image)
 
       new_image
     end
+
+    # shared EAGL context
+    def self.context
+      @context ||= begin
+        gl_context = EAGLContext.alloc.initWithAPI(KEAGLRenderingAPIOpenGLES2)
+        options    = {KCIContextWorkingColorSpace => nil}
+        CIContext.contextWithEAGLContext(gl_context, options:options)
+      end
+    end
+
+  protected
 
     def apply_filters_to(image)
       @filters.each do |name, filter|

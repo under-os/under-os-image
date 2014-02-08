@@ -21,7 +21,9 @@ module UnderOs
     end
 
     def filter(params)
-      Filter.new(params).apply_to(self)
+      @filter ||= Filter.new.tap{ |f| f.image = self }
+      @filter.params = params
+      @filter.apply
     end
   end
 end
