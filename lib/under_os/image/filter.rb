@@ -14,7 +14,7 @@ class UnderOs::Image
 
     def image=(image)
       @image = CIImage.alloc.initWithImage(
-        image.is_a?(UnderOs::Image) ? image.raw : image)
+        image.is_a?(UnderOs::Image) ? image._ : image)
     end
 
     def apply
@@ -136,8 +136,8 @@ class UnderOs::Image
       end
     end
 
-    def render
-      image     = apply_filters_to(@image)
+    def render(image=@image)
+      image     = apply_filters_to(image)
       cg_image  = UnderOs::Image::Filter.context.createCGImage(image, fromRect:image.extent)
       new_image = UIImage.imageWithCGImage(cg_image)
       CGImageRelease(cg_image)

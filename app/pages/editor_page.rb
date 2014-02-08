@@ -22,7 +22,7 @@ class EditorPage < UOS::Page
   end
 
   def cancel
-    @preview.src = @cropped.raw
+    @preview.src = @cropped._
     @menu.hide
   end
 

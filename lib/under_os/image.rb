@@ -14,10 +14,10 @@ module UnderOs
       picker.pick(&block)
     end
 
-    attr_accessor :raw
+    attr_accessor :_
 
     def initialize(raw_image)
-      @raw = raw_image
+      @_ = raw_image
     end
 
     def filter(params)

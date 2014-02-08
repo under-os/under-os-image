@@ -4,11 +4,11 @@
 class UnderOs::Image
   def resize(size)
     size      = UOS::Point.new(size)
-    ratio     = size.x * 2 / @raw.size.width
-    new_size  = CGSizeMake(size.x * 2, @raw.size.height * ratio)
+    ratio     = size.x * 2 / @_.size.width
+    new_size  = CGSizeMake(size.x * 2, @_.size.height * ratio)
 
     UIGraphicsBeginImageContext(new_size)
-    @raw.drawInRect(CGRectMake(0,0,new_size.width,new_size.height))
+    @_.drawInRect(CGRectMake(0,0,new_size.width,new_size.height))
     new_image = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
 
