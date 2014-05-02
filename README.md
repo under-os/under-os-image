@@ -16,7 +16,7 @@ with routine things like image picking, resizing and filtering
 
 ## Picking & Taking
 
-To make things easier the `UOS::Image` class has two methods `#take` and `#pick`
+To make things easier the `UOS::Image` class has two methods `.take` and `.pick`
 which will bring in the native iOS image picker/camera modules to quickly get you going
 
 ```ruby
@@ -28,6 +28,9 @@ UOS::Image.pick do |image|
   # picks the image from the image picker
 end
 ```
+
+__NOTE__: `UOS::Image.take` will automatically fall back to `UOS::Image.pick` method
+if the device doesn't have a camera in it (like simulator)
 
 
 # Copyright & License
