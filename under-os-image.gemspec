@@ -13,7 +13,7 @@ Gem::Specification.new do |gem|
 
   gem.files         = Dir['lib/**/*']
 
-  gem.add_runtime_dependency 'under-os'#, path: '../under-os'
+  gem.add_runtime_dependency 'under-os-ui'
 
   gem.add_development_dependency 'rake'
 end

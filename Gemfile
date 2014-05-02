@@ -1,3 +1,3 @@
 source 'https://rubygems.org'
-gem 'under-os', path: '../under-os'
+gem 'under-os-ui'
 gemspec
