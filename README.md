@@ -1,6 +1,6 @@
 # UnderOS Image
 
-The new simplified images processing API for the [http://under-os.com](under-os) project
+The new simplified images processing API for the [under-os](http://under-os.com) project
 
 Basically it's a wrapper over the `UIImage` and the `CoreImage` library to help me to deal
 with routine things like image picking, resizing and filtering
