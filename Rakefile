@@ -15,4 +15,3 @@ Motion::Project::App.setup do |app|
   app.codesign_certificate = ENV['RUBYMOTION_CERTIFICATE']
   app.provisioning_profile = ENV['RUBYMOTION_PROFILE']
 end
-

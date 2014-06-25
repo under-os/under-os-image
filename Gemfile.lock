@@ -1,0 +1,20 @@
+PATH
+  remote: .
+  specs:
+    under-os-image (1.0.0)
+      under-os-ui
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    rake (10.3.2)
+    under-os-core (1.4.0)
+    under-os-ui (1.4.0)
+      under-os-core (= 1.4.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  rake
+  under-os-image!
